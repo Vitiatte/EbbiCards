@@ -1,0 +1,32 @@
+CREATE SCHEMA `ebbi_cards_v1.0` ;
+
+CREATE TABLE `ebbi_cards_v1.0`.`card` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(45) NOT NULL,
+  `note` BLOB NOT NULL,
+  `adding_date` DATE NOT NULL,
+  `last_train` DATE NOT NULL,
+  `next_train` DATE NOT NULL,
+  `card_level` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `ebbi_cards_v1.0`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `login` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `ebbi_cards_v1.0`.`card`
+ADD COLUMN `user_id` INT NOT NULL AFTER `card_level`,
+ADD INDEX `user_id_idx` (`user_id` ASC) VISIBLE;
+;
+ALTER TABLE `ebbi_cards_v1.0`.`card`
+ADD CONSTRAINT `user_id`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `ebbi_cards_v1.0`.`user` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
